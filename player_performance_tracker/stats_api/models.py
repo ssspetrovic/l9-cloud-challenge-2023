@@ -9,7 +9,7 @@ class Player(models.Model):
     POSITIONS = [
         ("PG", "Point guard"),
         ("SG", "Shooting guard"),
-        ("SF", "Smallforward"),
+        ("SF", "Small forward"),
         ("PF", "Power forward"),
         ("C", "Center")
     ]
@@ -23,37 +23,35 @@ class Player(models.Model):
 
 
 class PlayerStats(models.Model):
-    # Regular statistics
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     games_played = models.IntegerField(default=0)
-
-    ft_attempts = models.FloatField(default=0.0)
-    ft_made = models.FloatField(default=0.0)
-    ft_percentage = models.FloatField(default=0.0)
-
-    two_pt_attempts = models.FloatField(default=0.0)
-    two_pt_made = models.FloatField(default=0.0)
-    two_pt_percentage = models.FloatField(default=0.0)
-
-    three_pt_attempts = models.FloatField(default=0.0)
-    three_pt_made = models.FloatField(default=0.0)
-    three_pt_percentage = models.FloatField(default=0.0)
-
-    points = models.FloatField(default=0.0)
-    rebounds = models.FloatField(default=0.0)
-    blocks = models.FloatField(default=0.0)
-    assists = models.FloatField(default=0.0)
-    steals = models.FloatField(default=0.0)
-    turnovers = models.FloatField(default=0.0)
-
-    # Advanced statistics
-    valorization = models.FloatField(default=0.0)
-    effective_field_goal_percentage = models.FloatField(default=0.0)
-    true_shooting_percentage = models.FloatField(default=0.0)
-    hollinger_assist_ratio = models.FloatField(default=0.0)
+    # Regular statistics
+    ftm = models.FloatField(default=0.0, verbose_name="free throw made")
+    fta = models.FloatField(default=0.0, verbose_name="free throw attempted")
+    two_pm = models.FloatField(default=0.0, verbose_name="two points made")
+    two_pa = models.FloatField(default=0.0, verbose_name="two points attempted")
+    three_pm = models.FloatField(default=0.0, verbose_name="three points made")
+    three_pa = models.FloatField(default=0.0, verbose_name="three points attempted")
+    pts = models.FloatField(default=0.0, verbose_name="points")
+    reb = models.FloatField(default=0.0, verbose_name="rebounds")
+    blk = models.FloatField(default=0.0, verbose_name="blocks")
+    ast = models.FloatField(default=0.0, verbose_name="assists")
+    stl = models.FloatField(default=0.0, verbose_name="steals")
+    to = models.FloatField(default=0.0, verbose_name="turnovers")
+    # Derived statistics
+    ftp = models.FloatField(default=0.0, verbose_name="free throw percentage")
+    two_pp = models.FloatField(default=0.0, verbose_name="two points percentage")
+    three_pp = models.FloatField(default=0.0, verbose_name="three points percentage")
+    #   Advanced statistics
+    val = models.FloatField(default=0.0, verbose_name="valorization")
+    efgp = models.FloatField(default=0.0, verbose_name="effective field goal percentage")
+    tsp = models.FloatField(default=0.0, verbose_name="true shooting percentage")
+    hastp = models.FloatField(default=0.0, verbose_name="hollinger assist ratio")
 
     class Meta:
         verbose_name_plural = "player stats"
 
     def __str__(self):
         return f"{self.player.player_name}'s statistics"
+    
+    

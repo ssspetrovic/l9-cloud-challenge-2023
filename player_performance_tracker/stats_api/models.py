@@ -14,9 +14,12 @@ class Player(models.Model):
         ("C", "Center")
     ]
 
-    playerName = models.CharField(
+    player_name = models.CharField(
         max_length=20, null=False, verbose_name="player's  name")
     position = models.CharField(max_length=2, choices=POSITIONS)
+
+    def __str__(self):
+        return f"{self.player_name} ({self.position})"
 
 
 class PlayerStats(models.Model):
@@ -48,3 +51,9 @@ class PlayerStats(models.Model):
     effective_field_goal_percentage = models.FloatField(default=0.0)
     true_shooting_percentage = models.FloatField(default=0.0)
     hollinger_assist_ratio = models.FloatField(default=0.0)
+
+    class Meta:
+        verbose_name_plural = "player stats"
+
+    def __str__(self):
+        return f"{self.player.player_name}'s statistics"

@@ -15,8 +15,21 @@ class Player(models.Model):
     ]
 
     player_name = models.CharField(
-        max_length=20, null=False, verbose_name="player's  name")
+        max_length=50, null=False, verbose_name="player's  name")
     position = models.CharField(max_length=2, choices=POSITIONS)
+    games_played = models.IntegerField(default=0, verbose_name="games played")
+
+    CSV_MAPPING = {
+        'PLAYER': 'player_name',
+        'POSITION': 'position',
+    }
+
+    @classmethod
+    def create_from_csv_row(cls, row):
+        player_data = {cls.CSV_MAPPING[key]: value for key,
+                       value in row.items() if key in cls.CSV_MAPPING}
+        player, _ = cls.objects.get_or_create(**player_data)
+        return player
 
     def __str__(self):
         return f"{self.player_name} ({self.position})"
@@ -25,9 +38,8 @@ class Player(models.Model):
 class PlayerStats(models.Model):
     player = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name="statistics")
-    
+
     # Regular statistics
-    games_played = models.IntegerField(default=0, verbose_name="games played")
     ftm = models.FloatField(default=0.0, verbose_name="free throw made")
     fta = models.FloatField(default=0.0, verbose_name="free throw attempted")
     two_pm = models.FloatField(default=0.0, verbose_name="two points made")
@@ -75,16 +87,36 @@ class PlayerStats(models.Model):
     def hastp(self):
         return round((self.ast / (self.two_pa + self.three_pa + 0.475 * self.fta + self.ast + self.to)) * 100 if (self.two_pa + self.three_pa + 0.475 * self.fta + self.ast + self.to) else 0, 1)
 
-    class Meta:
-        verbose_name_plural = "player stats"
+    CSV_MAPPING = {
+        'FTM': 'ftm',
+        'FTA': 'fta',
+        '2PM': 'two_pm',
+        '2PA': 'two_pa',
+        '3PM': 'three_pm',
+        '3PA': 'three_pa',
+        'REB': 'reb',
+        'BLK': 'blk',
+        'AST': 'ast',
+        'STL': 'stl',
+        'TOV': 'to',
+    }
 
-    def __str__(self):
-        return f"{self.player.player_name}'s statistics"
+    @classmethod
+    def create_from_csv_row(cls, player, row):
+        stats_data = {cls.CSV_MAPPING[key]: float(value) for key,
+                      value in row.items() if key in cls.CSV_MAPPING}
+        stats_data['player'] = player
+        player_stats = cls.objects.create(**stats_data)
+
+        # After the stat was successfully created, increment the game count
+        player.games_played += 1
+        player.save()
+        return player_stats
 
     def to_dict(self):
         return {
             "playerName": self.player.player_name,
-            "gamesPlayed": self.games_played,
+            "gamesPlayed": self.player.games_played,
             "traditional": {
                 "freeThrows": {
                     "attempts": self.fta,
@@ -115,3 +147,9 @@ class PlayerStats(models.Model):
                 "hollingerAssistRatio": self.hastp,
             },
         }
+
+    class Meta:
+        verbose_name_plural = "player stats"
+
+    def __str__(self):
+        return f"{self.player.player_name}'s statistics"

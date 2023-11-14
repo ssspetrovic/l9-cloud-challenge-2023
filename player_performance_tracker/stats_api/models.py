@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
-
 
 # Create your models here.
 class Player(models.Model):
@@ -20,8 +17,8 @@ class Player(models.Model):
     games_played = models.IntegerField(default=0, verbose_name="games played")
 
     CSV_MAPPING = {
-        'PLAYER': 'player_name',
-        'POSITION': 'position',
+        "PLAYER": "player_name",
+        "POSITION": "position",
     }
 
     @classmethod
@@ -88,24 +85,24 @@ class PlayerStats(models.Model):
         return round((self.ast / (self.two_pa + self.three_pa + 0.475 * self.fta + self.ast + self.to)) * 100 if (self.two_pa + self.three_pa + 0.475 * self.fta + self.ast + self.to) else 0, 1)
 
     CSV_MAPPING = {
-        'FTM': 'ftm',
-        'FTA': 'fta',
-        '2PM': 'two_pm',
-        '2PA': 'two_pa',
-        '3PM': 'three_pm',
-        '3PA': 'three_pa',
-        'REB': 'reb',
-        'BLK': 'blk',
-        'AST': 'ast',
-        'STL': 'stl',
-        'TOV': 'to',
+        "FTM": "ftm",
+        "FTA": "fta",
+        "2PM": "two_pm",
+        "2PA": "two_pa",
+        "3PM": "three_pm",
+        "3PA": "three_pa",
+        "REB": "reb",
+        "BLK": "blk",
+        "AST": "ast",
+        "STL": "stl",
+        "TOV": "to",
     }
 
     @classmethod
     def create_from_csv_row(cls, player, row):
         stats_data = {cls.CSV_MAPPING[key]: float(value) for key,
                       value in row.items() if key in cls.CSV_MAPPING}
-        stats_data['player'] = player
+        stats_data["player"] = player
         player_stats = cls.objects.create(**stats_data)
 
         # After the stat was successfully created, increment the game count

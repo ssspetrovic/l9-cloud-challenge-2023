@@ -7,7 +7,7 @@ from django.db import models
 # Create your models here.
 class Player(models.Model):
     POSITIONS = [
-        ("PG ", "Point guard"),
+        ("PG", "Point guard"),
         ("SG", "Shooting guard"),
         ("SF", "Smallforward"),
         ("PF", "Power forward"),

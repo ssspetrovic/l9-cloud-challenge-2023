@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "l9-cloud-challenge-2023"
+name = "player_performance_tracker"
 version = "0.1.0"
 description = ""
 authors = ["Srdjan Petrovic <s.petrovic852@gmail.com>"]

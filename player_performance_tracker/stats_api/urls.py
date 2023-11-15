@@ -1,7 +1,6 @@
 from django.urls import path
-from . import views
+from .views import PlayerStatsViewSet
 
 urlpatterns = [
-    path("", views.index, name="index")
+    path('stats/player/<str:player_name>/', PlayerStatsViewSet.as_view({'get': 'retrieve'})),
 ]
-

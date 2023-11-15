@@ -4,11 +4,11 @@ from rest_framework import status
 from .serializers import PlayerStatsAggregateSerializer
 from .services import PlayerStatsService
 from .models import Player
+# from .services import DataService
 
-from .services import DataService
 class PlayerStatsView(APIView):
-    # DataService.fill_db_from_csv()
     def get(self, request, player_name):
+        # DataService.fill_in_memory_db()
         try:
             aggregated_data = PlayerStatsService.get_aggregated_stats(
                 player_name)

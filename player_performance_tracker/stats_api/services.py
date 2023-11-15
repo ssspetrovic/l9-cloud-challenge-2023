@@ -2,6 +2,11 @@ import os
 import logging
 import csv
 
+from django.core.management import call_command
+from django.db import connections
+from django.db.utils import OperationalError
+from stats_api.models import Player
+
 from django.db.models import Avg
 from .models import Player, PlayerStats
 

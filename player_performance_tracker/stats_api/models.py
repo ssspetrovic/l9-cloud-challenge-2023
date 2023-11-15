@@ -36,7 +36,7 @@ class PlayerStats(models.Model):
     player = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name="statistics")
 
-    # Regular statistics
+    # Base statistics
     ftm = models.FloatField(default=0.0, verbose_name="free throw made")
     fta = models.FloatField(default=0.0, verbose_name="free throw attempted")
     two_pm = models.FloatField(default=0.0, verbose_name="two points made")
@@ -110,39 +110,37 @@ class PlayerStats(models.Model):
         player.save()
         return player_stats
 
-    def to_dict(self):
+    def traditional_to_dict(self):
         return {
-            "playerName": self.player.player_name,
-            "gamesPlayed": self.player.games_played,
-            "traditional": {
-                "freeThrows": {
-                    "attempts": self.fta,
-                    "made": self.ftm,
-                    "shootingPercentage": self.ftp,
-                },
-                "twoPoints": {
-                    "attempts": self.two_pa,
-                    "made": self.two_pm,
-                    "shootingPercentage": self.two_pp,
-                },
-                "threePoints": {
-                    "attempts": self.three_pa,
-                    "made": self.three_pm,
-                    "shootingPercentage": self.three_pp,
-                },
-                "points": self.pts,
-                "rebounds": self.reb,
-                "blocks": self.blk,
-                "assists": self.ast,
-                "steals": self.stl,
-                "turnovers": self.to,
+            "freeThrows": {
+                "attempts": round(self.fta, 1),
+                "made": round(self.ftm, 1),
+                "shootingPercentage": round(self.ftp, 1),
             },
-            "advanced": {
-                "valorization": self.val,
-                "effectiveFieldGoalPercentage": self.efgp,
-                "trueShootingPercentage": self.tsp,
-                "hollingerAssistRatio": self.hastp,
+            "twoPoints": {
+                "attempts": round(self.two_pa, 1),
+                "made": round(self.two_pm, 1),
+                "shootingPercentage": round(self.two_pp, 1),
             },
+            "threePoints": {
+                "attempts": round(self.three_pa, 1),
+                "made": round(self.three_pm, 1),
+                "shootingPercentage": round(self.three_pp, 1),
+            },
+            "points": round(self.pts, 1),
+            "rebounds": round(self.reb, 1),
+            "blocks": round(self.blk, 1),
+            "assists": round(self.ast, 1),
+            "steals": round(self.stl, 1),
+            "turnovers": round(self.to, 1),
+        }
+
+    def advanced_to_dict(self):
+        return {
+            "valorization": round(self.val, 1),
+            "effectiveFieldGoalPercentage": round(self.efgp, 1),
+            "trueShootingPercentage": round(self.tsp, 1),
+            "hollingerAssistRatio": round(self.hastp, 1),
         }
 
     class Meta:

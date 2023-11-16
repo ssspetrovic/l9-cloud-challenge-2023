@@ -283,3 +283,6 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode
+
+# Ignore the CSV file directory
+player_performance_tracker/stats_api/data/

@@ -31,13 +31,9 @@ poetry install
 ## Running the Application
 
 To run the application:
-1. Place the .csv file inside of the ./player_performance_tracker/stats_api/data folder and update the **FILE_NAME** accordingly inside of DataService class
-
-```bash
-cp file_name.csv CLONE_LOCATION/l9-cloud-challenge-2023/player_performance_tracker/stats_api/data
-```
+1. Place the wanted .csv file inside of the ./player_performance_tracker/stats_api/data folder and update the **FILE_NAME** accordingly inside of DataService class. The base file is already included with the project.
    
-3. Activate the poetry shell inside the **root** folder
+2. Activate the poetry shell inside the **root** folder
    
 ```bash
 poetry shell

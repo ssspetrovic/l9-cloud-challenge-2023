@@ -37,7 +37,7 @@ To run the application:
 cp file_name.csv CLONE_LOCATION/l9-cloud-challenge-2023/player_performance_tracker/stats_api/data
 ```
    
-3. Activate the poetry shell
+3. Activate the poetry shell inside the **root** folder
    
 ```bash
 poetry shell

@@ -29,11 +29,14 @@ poetry install
 
 To run the application:
 1. Place the .csv file inside of the ./player-performance-tracker/stats_api/data folder and update the name accordingly inside of DataService class
-2. Run the following command
-  ```bash
+2. Activate the poetry shell
+```bash
+poetry shell
+```
+3. Run the server
+```bash
   python manage.py runserver
-  ```  
-
+  ```
 ## Technologies Used
 
 - **Python**: A high-level, interpreted programming language with dynamic semantics.

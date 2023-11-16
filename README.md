@@ -34,7 +34,7 @@ To run the application:
 1. Place the .csv file inside of the ./player_performance_tracker/stats_api/data folder and update the **FILE_NAME** accordingly inside of DataService class
 
 ```bash
-cp file_name.csv CLONE_LOCATION/9-cloud-challenge-2023/palyer_performance_tracker/data
+cp file_name.csv CLONE_LOCATION/l9-cloud-challenge-2023/player_performance_tracker/stats_api/data
 ```
    
 3. Activate the poetry shell

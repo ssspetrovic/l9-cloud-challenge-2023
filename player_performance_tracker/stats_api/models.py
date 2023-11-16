@@ -45,7 +45,7 @@ class Player(models.Model):
         return player
 
     def __str__(self):
-        return f"{self.player_name} ({self.position})"
+        return self.player_name
 
 
 class PlayerStats(models.Model):

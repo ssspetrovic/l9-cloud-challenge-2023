@@ -1,4 +1,4 @@
-# Levi9 Cloud Challenge 2023 - Player Performance Tracker
+# Levi9 5 Days in Cloud Challenge | Player Performance Tracker
 
 ## Environment Setup
 
@@ -27,13 +27,12 @@ poetry install
 
 ## Running the Application
 
-To run the application, use the following command:
-
-```bash
-python manage.py runserver
-```
-
-For targeting the endpoint outside the django server, CORS_WHITELIST can be used inside of settings.py to whitelist the required IP address.
+To run the application:
+1. Place the .csv file inside of the ./player-performance-tracker/stats_api/data folder and update the name accordingly inside of DataService class
+2. Run the following command
+  ```bash
+  python manage.py runserver
+  ```  
 
 ## Technologies Used
 

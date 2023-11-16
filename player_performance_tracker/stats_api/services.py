@@ -1,10 +1,10 @@
 import os
 import logging
 import csv
-
 from django.db.models import Avg
-
 from .models import Player, PlayerStats
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class DataService:
@@ -14,7 +14,8 @@ class DataService:
     This class provides methods to validate a CSV file and fill the database with data from the CSV file.
     The CSV file is expected to be in a specific format, with certain required columns.
     """
-    FILE_PATH = "stats_api/data/L9HomeworkChallengePlayersInput.csv"
+    FILE_NAME = "L9HomeworkChallengePlayersInput.csv" # TODO Change the name of the file
+    FILE_PATH = os.path.join(BASE_DIR, f"stats_api/data/{FILE_NAME}")
     MODE = "r"
     ENCODING = "utf-8-sig"
 

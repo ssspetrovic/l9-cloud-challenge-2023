@@ -35,8 +35,8 @@ poetry shell
 ```
 3. Run the server
 ```bash
-  python manage.py runserver
-  ```
+python manage.py runserver
+```
 ## Technologies Used
 
 - **Python**: A high-level, interpreted programming language with dynamic semantics.

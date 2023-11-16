@@ -20,7 +20,7 @@ pip install poetry
 2. Clone the repository and navigate to the project directory.
    
 ```bash
-git clone https://github.com/ssspetrovic/l9-cloud-challenge-2023.git && cd 9-cloud-challenge-2023
+git clone https://github.com/ssspetrovic/l9-cloud-challenge-2023.git && cd l9-cloud-challenge-2023
 ```
 3. Install the project dependencies:
 

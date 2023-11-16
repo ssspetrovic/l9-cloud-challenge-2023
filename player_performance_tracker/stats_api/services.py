@@ -2,16 +2,18 @@ import os
 import logging
 import csv
 
-from django.core.management import call_command
-from django.db import connections
-from django.db.utils import OperationalError
-from stats_api.models import Player
-
 from django.db.models import Avg
+
 from .models import Player, PlayerStats
 
 
 class DataService:
+    """
+    A service class for handling CSV data and filling the database.
+
+    This class provides methods to validate a CSV file and fill the database with data from the CSV file.
+    The CSV file is expected to be in a specific format, with certain required columns.
+    """
     FILE_PATH = "stats_api/data/L9HomeworkChallengePlayersInput.csv"
     MODE = "r"
     ENCODING = "utf-8-sig"
@@ -21,6 +23,12 @@ class DataService:
 
     @staticmethod
     def validate_csv_file():
+        """
+        Validates the CSV file.
+
+        Checks if the file exists and if it contains the required columns.
+        Raises a FileNotFoundError if the file does not exist, and a ValueError if the required columns are missing.
+        """
         if not os.path.exists(DataService.FILE_PATH):
             logging.error(
                 f"File {DataService.FILE_PATH} does not exist.")
@@ -39,6 +47,12 @@ class DataService:
 
     @staticmethod
     def fill_db_from_csv():
+        """
+        Fills the database with data from the CSV file.
+
+        Validates the CSV file, then reads the file and creates Player and PlayerStats objects for each row.
+        Raises an exception if there is an error while filling the database.
+        """
         try:
             DataService.validate_csv_file()
             with open(file=DataService.FILE_PATH, mode=DataService.MODE, encoding=DataService.ENCODING) as csv_file:
@@ -52,8 +66,22 @@ class DataService:
 
 
 class PlayerStatsService:
+    """
+    A service class for handling player statistics.
+
+    This class provides methods to get aggregated statistics for a player and create PlayerStats objects from aggregated data.
+    """
     @staticmethod
     def get_aggregated_stats(player_name):
+        """
+        Gets the aggregated statistics for a player.
+
+        Args:
+            player_name (str): The name of the player.
+
+        Returns:
+            dict: A dictionary containing the aggregated statistics for the player.
+        """
         player = Player.objects.get(player_name=player_name)
         aggregation_fields = {f"avg_{field}": Avg(
             field) for field in PlayerStats.CSV_MAPPING.values()}
@@ -64,6 +92,15 @@ class PlayerStatsService:
 
     @staticmethod
     def create_stats_from_aggregated(aggregated_data):
+        """
+        Creates a PlayerStats object from aggregated data.
+
+        Args:
+            aggregated_data (dict): A dictionary containing the aggregated data.
+
+        Returns:
+            PlayerStats: The created PlayerStats object.
+        """
         stats = PlayerStats()
         for field in PlayerStats.CSV_MAPPING.values():
             if hasattr(stats, field):

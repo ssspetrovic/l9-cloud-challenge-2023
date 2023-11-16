@@ -10,6 +10,18 @@ class StatsApiConfig(AppConfig):
     name = 'stats_api'
 
     def ready(self):
+        """
+        This method is called when the Django application is ready.
+
+        It attempts to perform a migration on the 'stats_api' app without any user input.
+        If the migration is successful, it then calls the 'fill_db_from_csv' method from the 'DataService' class
+        in the 'services.py' module to populate the database from a CSV file.
+
+        If the database is not ready (an OperationalError is raised), it prints a message to the console.
+
+        Raises:
+            OperationalError: An error occurred while attempting to access the database.
+        """
         try:
             call_command('migrate', 'stats_api', '--noinput')
             from .services import DataService

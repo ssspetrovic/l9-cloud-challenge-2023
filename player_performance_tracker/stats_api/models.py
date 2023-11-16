@@ -1,8 +1,19 @@
 from django.db import models
 
 
-# Create your models here.
 class Player(models.Model):
+    """
+    Django model for a basketball player.
+
+    This class represents a basketball player with a name, position, and the number of games they've played.
+    The player's position is one of the following: Point guard (PG), Shooting guard (SG), Small forward (SF), Power forward (PF), or Center (C).
+
+    Attributes:
+        player_name (CharField): The name of the player. This field cannot be null.
+        position (CharField): The position of the player. This field can only take one of the predefined choices in POSITIONS.
+        games_played (IntegerField): The number of games the player has played. This field defaults to 0.
+        CSV_MAPPING (dict): A dictionary mapping CSV column names to model field names.
+    """
     POSITIONS = [
         ("PG", "Point guard"),
         ("SG", "Shooting guard"),
@@ -23,6 +34,11 @@ class Player(models.Model):
 
     @classmethod
     def create_from_csv_row(cls, row):
+        """
+        Django model for a basketball player.
+
+        This class represents a basketball player with attributes for their name, position, and the number of games they've played. The player's position is one of the predefined choices. The class also includes a mapping from CSV column names to model field names for data import.
+        """
         player_data = {cls.CSV_MAPPING[key]: value for key,
                        value in row.items() if key in cls.CSV_MAPPING}
         player, _ = cls.objects.get_or_create(**player_data)
@@ -33,6 +49,13 @@ class Player(models.Model):
 
 
 class PlayerStats(models.Model):
+    """
+    Django model for a player's statistics.
+
+    This class represents a player's statistics in a basketball game. It includes base statistics such as free throws made and attempted, two-point shots made and attempted, three-point shots made and attempted, rebounds, blocks, assists, steals, and turnovers.
+
+    It also includes derived statistics which are calculated based on the base statistics. These include free throw percentage, two-point percentage, three-point percentage, points, valuation, effective field goal percentage, true shooting percentage, and assist to turnover ratio.
+    """
     player = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name="statistics")
 
@@ -100,6 +123,24 @@ class PlayerStats(models.Model):
 
     @classmethod
     def create_from_csv_row(cls, player, row):
+        """
+        Class method to create a player's stats from a row of CSV data.
+
+        This method takes a player object and a row of CSV data as input. It creates a dictionary 'stats_data' where
+        each key-value pair is a stat and its corresponding value from the CSV row. Only the keys present in 'CSV_MAPPING'
+        are considered, and their values are converted to float.
+
+        The 'player' object is then added to 'stats_data', and a new player stat is created in the database using this data.
+
+        After the player stat is successfully created, the 'games_played' count for the player is incremented by 1.
+
+        Args:
+            player (Player): The player object for whom the stats are being created.
+            row (dict): A dictionary representing a row of CSV data.
+
+        Returns:
+            player_stats (PlayerStats): The newly created player stats object.
+        """
         stats_data = {cls.CSV_MAPPING[key]: float(value) for key,
                       value in row.items() if key in cls.CSV_MAPPING}
         stats_data["player"] = player
@@ -111,6 +152,12 @@ class PlayerStats(models.Model):
         return player_stats
 
     def traditional_to_dict(self):
+        """
+        Calculate and return the per game traditional statistics of a player rounded to 1 decimal.
+
+        Returns:
+            dict: A dictionary containing the per game statistics.
+        """
         return {
             "freeThrows": {
                 "attempts": round(self.fta, 1),
@@ -136,6 +183,12 @@ class PlayerStats(models.Model):
         }
 
     def advanced_to_dict(self):
+        """
+        Calculate and return the per game advanced statistics of a player rounded to 1 decimal.
+
+        Returns:
+            dict: A dictionary containing the per game statistics.
+        """
         return {
             "valorization": round(self.val, 1),
             "effectiveFieldGoalPercentage": round(self.efgp, 1),

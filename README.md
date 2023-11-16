@@ -18,7 +18,11 @@ pip install poetry
 ```
 
 2. Clone the repository and navigate to the project directory.
-
+   
+```bash
+https://github.com/ssspetrovic/l9-cloud-challenge-2023.git
+cd 9-cloud-challenge-2023
+```
 3. Install the project dependencies:
 
 ```bash
@@ -29,11 +33,19 @@ poetry install
 
 To run the application:
 1. Place the .csv file inside of the ./player_performance_tracker/stats_api/data folder and update the **FILE_NAME** accordingly inside of DataService class
-2. Activate the poetry shell
+
+```bash
+cp file_name.csv CLONE_LOCATION/9-cloud-challenge-2023/palyer_performance_tracker/data
+```
+   
+3. Activate the poetry shell
+   
 ```bash
 poetry shell
 ```
+
 3. Run the server
+
 ```bash
 python player_performance_tracker/manage.py runserver
 ```
